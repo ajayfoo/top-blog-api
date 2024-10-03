@@ -11,8 +11,8 @@ const secret = fs.readFileSync(
   path.join(rootFolder, "secrets", "private-key.pem")
 );
 
-const createJWT = (payload) => {
-  const token = jwt.sign(payload, secret, {
+const createJWT = (sub) => {
+  const token = jwt.sign({ sub }, secret, {
     algorithm: "RS256",
     ...getJWTOptions(),
   });

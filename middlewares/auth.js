@@ -14,7 +14,11 @@ passport.use(
     try {
       const user = await db.user.findUnique({
         where: {
-          id: payload.id,
+          id: payload.sub,
+        },
+        select: {
+          id: true,
+          isAdmin: true,
         },
       });
       if (user) {
