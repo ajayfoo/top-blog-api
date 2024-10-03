@@ -3,7 +3,8 @@
   "version": "0.0.1",
   "type": "module",
   "scripts": {
-    "serve": "node --watch app.js"
+    "serve": "node --watch app.js",
+    "bootstrap": "node ./bin/bootstrap.js"
   },
   "license": "MIT",
   "devDependencies": {
