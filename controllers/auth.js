@@ -1,7 +1,7 @@
 import bcrypt from "bcrypt";
 import "dotenv/config";
-import { db } from "../db.js";
-import jwt from "jsonwebtoken";
+import { db } from "../libs/db.js";
+import { createJWT } from "../libs/utils.js";
 
 const signUp = async (req, res) => {
   const { username, password } = req.body;
@@ -15,11 +15,9 @@ const signUp = async (req, res) => {
     },
     select: { id: true },
   });
-  const privateKey = "secret";
-  const token = jwt.sign(user, privateKey);
-  console.log(token);
-  res.cookie("jwt", token);
-  res.send(token);
+  const jwt = createJWT(user);
+  res.cookie("jwt", jwt);
+  res.send(jwt);
 };
 
 export { signUp };

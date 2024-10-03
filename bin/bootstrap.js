@@ -12,29 +12,17 @@ const bootstrapProject = async () => {
   console.log("Creating public key pairs...");
   const generateKeyPairPromisified = util.promisify(generateKeyPair);
   try {
-    const keyPair = await generateKeyPairPromisified("rsa", {
+    const { privateKey } = await generateKeyPairPromisified("rsa", {
       modulusLength: 4096,
-      publicKeyEncoding: {
-        type: "spki",
-        format: "pem",
-      },
-      privateKeyEncoding: {
-        type: "pkcs8",
-        format: "pem",
-        cipher: "aes-256-cbc",
-        passphrase: "top secret",
-      },
+      publicKeyEncoding: { type: "spki", format: "pem" },
+      privateKeyEncoding: { type: "pkcs8", format: "pem" },
     });
     await fs.mkdir(path.join(rootFolder, "secrets"));
     fs.writeFile(
       path.join(rootFolder, "secrets", "private-key.pem"),
-      keyPair.privateKey
+      privateKey
     );
-    fs.writeFile(
-      path.join(rootFolder, "secrets", "public-key.pem"),
-      keyPair.publicKey
-    );
-    console.log("Created public key pairs in secrets directory");
+    console.log("Created private key in secrets directory");
   } catch (err) {
     console.error("Failed to create public key pairs");
     console.error(err);

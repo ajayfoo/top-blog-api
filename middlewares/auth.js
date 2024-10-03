@@ -1,15 +1,15 @@
 import { Strategy, ExtractJwt } from "passport-jwt";
-import { db } from "../db.js";
+import { db } from "../libs/db.js";
 import passport from "passport";
+import { getSecretForJWT } from "../libs/utils.js";
 
 const opts = {
   jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
-  secretOrKey: "secret",
+  secretOrKey: getSecretForJWT(),
 };
 
 passport.use(
   new Strategy(opts, async (payload, done) => {
-    console.log("hi");
     try {
       const user = await db.user.findUnique({
         where: {
@@ -20,7 +20,6 @@ passport.use(
         done(null, user);
       } else {
         done(null, false);
-        console.log("hi");
       }
     } catch (err) {
       done(err);
