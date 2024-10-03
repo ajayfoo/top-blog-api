@@ -1,11 +1,12 @@
 import { Strategy, ExtractJwt } from "passport-jwt";
 import { db } from "../libs/db.js";
 import passport from "passport";
-import { getSecretForJWT } from "../libs/utils.js";
+import { getJWTOptions, getSecretForJWT } from "../libs/utils.js";
 
 const opts = {
   jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
   secretOrKey: getSecretForJWT(),
+  jsonWebTokenOptions: getJWTOptions(),
 };
 
 passport.use(
