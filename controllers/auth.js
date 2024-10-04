@@ -27,7 +27,7 @@ const signUp = async (req, res) => {
   } catch (err) {
     console.error(err);
     if (err.code === "P2002") {
-      res.sendStatus(403);
+      res.status(403).send("Username already exists");
       return;
     }
     res.sendStatus(500);
@@ -50,7 +50,7 @@ const login = async (req, res) => {
       },
     });
     if (!user) {
-      res.sendStatus(404);
+      res.status(404).send("User not found");
       return;
     }
     const isCorrectPassword = await bcrypt.compare(password, user.password);

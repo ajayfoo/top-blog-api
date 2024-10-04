@@ -1,17 +1,5 @@
-import { body, validationResult } from "express-validator";
-
-/** @type {import("express").RequestHandler} */
-const handleValidationResult = (req, res, next) => {
-  const result = validationResult(req);
-  if (result.isEmpty()) {
-    next();
-    return;
-  }
-  const formattedErrors = result
-    .array()
-    .map((e) => ({ msg: e.msg, path: e.path }));
-  res.send(formattedErrors);
-};
+import { body } from "express-validator";
+import { handleValidationResult } from "./utils.js";
 
 const signUpValidationMiddlewares = [
   body("username")
