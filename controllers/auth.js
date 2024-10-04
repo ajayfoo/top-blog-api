@@ -2,6 +2,10 @@ import bcrypt from "bcrypt";
 import "dotenv/config";
 import { db } from "../libs/db.js";
 import { createJWT } from "../libs/utils.js";
+import {
+  loginValidationMiddlewares,
+  signUpValidationMiddlewares,
+} from "../validators/auth.js";
 
 /** @type {import("express").RequestHandler} */
 const signUp = async (req, res) => {
@@ -22,9 +26,15 @@ const signUp = async (req, res) => {
     res.send(jwt);
   } catch (err) {
     console.error(err);
+    if (err.code === "P2002") {
+      res.sendStatus(403);
+      return;
+    }
     res.sendStatus(500);
   }
 };
+
+const signUpAndMiddlewares = [signUpValidationMiddlewares, signUp];
 
 /** @type {import("express").RequestHandler} */
 const login = async (req, res) => {
@@ -57,4 +67,6 @@ const login = async (req, res) => {
   }
 };
 
-export { signUp, login };
+const loginAndMiddlewares = [loginValidationMiddlewares, login];
+
+export { signUpAndMiddlewares, loginAndMiddlewares };
