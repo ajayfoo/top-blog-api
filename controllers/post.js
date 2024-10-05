@@ -33,4 +33,29 @@ const createPost = async (req, res) => {
 
 const createPostAndMiddlwares = [createPostValidationMiddlewares, createPost];
 
-export { createPostAndMiddlwares };
+/** @type {import("express").RequestHandler} */
+const getPosts = async (req, res) => {
+  try {
+    if (req.user.isAdmin) {
+      const posts = await db.post.findMany();
+      res.send(posts);
+      return;
+    }
+    const posts = await db.post.findMany({
+      where: {
+        isHidden: false,
+      },
+      select: {
+        id: true,
+        title: true,
+        body: true,
+      },
+    });
+    res.send(posts);
+  } catch (err) {
+    console.error(err);
+    res.sendStatus(500);
+  }
+};
+
+export { createPostAndMiddlwares, getPosts };
