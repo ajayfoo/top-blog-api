@@ -1,9 +1,20 @@
 import { Router } from "express";
-import { createPostAndMiddlwares, getPosts } from "../controllers/post.js";
+import {
+  createPostAndMiddlwares,
+  deletePost,
+  getPosts,
+  updatePostValidationMiddlewaresAndHandler,
+} from "../controllers/post.js";
+import { onlyAdmin } from "../middlewares/admin.js";
 
 const postRouter = Router();
 
-postRouter.post("/", createPostAndMiddlwares);
 postRouter.get("/", getPosts);
+
+postRouter.use(onlyAdmin);
+
+postRouter.post("/", createPostAndMiddlwares);
+postRouter.patch("/:id", updatePostValidationMiddlewaresAndHandler);
+postRouter.delete("/:id", deletePost);
 
 export default postRouter;

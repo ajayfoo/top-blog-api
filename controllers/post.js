@@ -3,13 +3,8 @@ import { createPostValidationMiddlewares } from "../validators/post.js";
 
 /** @type {import("express").RequestHandler} */
 const createPost = async (req, res) => {
-  if (!req.user.isAdmin) {
-    res.sendStatus(401);
-    return;
-  }
   const authorId = req.user.id;
-  const { title, body } = req.body;
-  const isHidden = Boolean(req.isHidden);
+  const { title, body, isHidden } = req.body;
   try {
     const { id } = await db.post.create({
       data: {
@@ -58,4 +53,59 @@ const getPosts = async (req, res) => {
   }
 };
 
-export { createPostAndMiddlwares, getPosts };
+/** @type {import("express").RequestHandler} */
+const updatePost = async (req, res) => {
+  const id = Number(req.params.id);
+  const { title, body, isHidden } = req.body;
+  try {
+    await db.post.update({
+      data: {
+        title,
+        body,
+        isHidden,
+      },
+      where: {
+        id,
+      },
+    });
+    res.sendStatus(200);
+    return;
+  } catch (err) {
+    console.error(err);
+    if (err.code === "P2025") {
+      res.status(404).send("Post not found");
+      return;
+    }
+    res.sendStatus(500);
+  }
+};
+
+const updatePostValidationMiddlewaresAndHandler = [
+  ...createPostValidationMiddlewares,
+  updatePost,
+];
+
+/** @type {import("express").RequestHandler} */
+const deletePost = async (req, res) => {
+  const id = Number(req.params.id);
+  try {
+    await db.post.delete({
+      where: { id },
+    });
+    res.sendStatus(200);
+  } catch (err) {
+    console.error(err);
+    if (err.code === "P2025") {
+      res.status(404).send("Post not found");
+      return;
+    }
+    res.sendStatus(500);
+  }
+};
+
+export {
+  createPostAndMiddlwares,
+  getPosts,
+  updatePostValidationMiddlewaresAndHandler,
+  deletePost,
+};

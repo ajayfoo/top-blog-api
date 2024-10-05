@@ -10,7 +10,7 @@ const handleValidationResult = (req, res, next) => {
   const formattedErrors = result
     .array()
     .map((e) => ({ msg: e.msg, path: e.path }));
-  res.send(formattedErrors);
+  res.status(400).send(formattedErrors);
 };
 
 export { handleValidationResult };
