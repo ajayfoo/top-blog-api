@@ -44,6 +44,7 @@ const getPosts = async (req, res) => {
         id: true,
         title: true,
         body: true,
+        updatedAt: true,
       },
     });
     res.send(posts);
