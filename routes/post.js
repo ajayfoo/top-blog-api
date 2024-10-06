@@ -1,9 +1,9 @@
 import { Router } from "express";
 import {
   createPostAndMiddlwares,
-  deletePost,
   getPosts,
-  updatePostValidationMiddlewaresAndHandler,
+  updatePostAndMiddlwares,
+  deletePostAndMiddlwares,
 } from "../controllers/post.js";
 import { onlyAdmin } from "../middlewares/admin.js";
 import commentRouter from "./comment.js";
@@ -16,7 +16,7 @@ postRouter.use("/:postId/comments", commentRouter);
 postRouter.use(onlyAdmin);
 
 postRouter.post("/", createPostAndMiddlwares);
-postRouter.patch("/:id", updatePostValidationMiddlewaresAndHandler);
-postRouter.delete("/:id", deletePost);
+postRouter.patch("/:id", updatePostAndMiddlwares);
+postRouter.delete("/:id", deletePostAndMiddlwares);
 
 export default postRouter;

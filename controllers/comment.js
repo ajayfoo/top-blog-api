@@ -1,9 +1,9 @@
 import { db } from "../libs/db.js";
 import {
-  createCommentValidationAndSanitizationMiddlewares,
-  deleteCommentsValidationAndSanitizationMiddlewares,
-  getCommentsValidationAndSanitizationMiddlewares,
-  updateCommentValidationAndSanitizationMiddlewares,
+  createCommentValidationMiddlewars,
+  deleteCommentValidationMiddlewars,
+  getCommentsValidationMiddlewars,
+  updateCommentValidationMiddlewars,
 } from "../validators/comment.js";
 
 /** @type {import("express").RequestHandler} */
@@ -37,8 +37,8 @@ const createComment = async (req, res) => {
   }
 };
 
-const createCommentMiddlewaresAndHandler = [
-  ...createCommentValidationAndSanitizationMiddlewares,
+const createCommentAndMiddlewares = [
+  ...createCommentValidationMiddlewars,
   createComment,
 ];
 
@@ -65,15 +65,15 @@ const getComments = async (req, res) => {
   }
 };
 
-const getCommentsMiddlewarsAndHandler = [
-  ...getCommentsValidationAndSanitizationMiddlewares,
+const getCommentsAndMiddlewars = [
+  ...getCommentsValidationMiddlewars,
   getComments,
 ];
 
 /** @type {import("express").RequestHandler} */
 const updateComment = async (req, res) => {
   try {
-    const { postId, commentId } = req.params;
+    const { postId, id } = req.params;
     const userId = req.user.id;
     const { content } = req.body;
     await db.comment.update({
@@ -81,7 +81,7 @@ const updateComment = async (req, res) => {
         content,
       },
       where: {
-        id: commentId,
+        id,
         userId,
         postId,
       },
@@ -93,19 +93,19 @@ const updateComment = async (req, res) => {
   }
 };
 
-const updateCommentMiddlewaresAndHandler = [
-  ...updateCommentValidationAndSanitizationMiddlewares,
+const updateCommentAndMiddlewares = [
+  ...updateCommentValidationMiddlewars,
   updateComment,
 ];
 
 /** @type {import("express").RequestHandler} */
 const deleteComment = async (req, res) => {
   try {
-    const { postId, commentId } = req.params;
+    const { postId, id } = req.params;
     const userId = req.user.id;
     await db.comment.delete({
       where: {
-        id: commentId,
+        id,
         userId,
         postId,
       },
@@ -117,14 +117,14 @@ const deleteComment = async (req, res) => {
   }
 };
 
-const deleteCommentMiddlewaresAndHandler = [
-  ...deleteCommentsValidationAndSanitizationMiddlewares,
+const deleteCommentAndMiddlewares = [
+  ...deleteCommentValidationMiddlewars,
   deleteComment,
 ];
 
 export {
-  createCommentMiddlewaresAndHandler,
-  getCommentsMiddlewarsAndHandler,
-  updateCommentMiddlewaresAndHandler,
-  deleteCommentMiddlewaresAndHandler,
+  createCommentAndMiddlewares,
+  getCommentsAndMiddlewars,
+  updateCommentAndMiddlewares,
+  deleteCommentAndMiddlewares,
 };

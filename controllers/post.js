@@ -1,5 +1,9 @@
 import { db } from "../libs/db.js";
-import { createPostValidationMiddlewares } from "../validators/post.js";
+import {
+  createPostValidationMiddlewares,
+  deletePostValidationMiddlewares,
+  updatePostValidationMiddlewares,
+} from "../validators/post.js";
 
 /** @type {import("express").RequestHandler} */
 const createPost = async (req, res) => {
@@ -26,7 +30,10 @@ const createPost = async (req, res) => {
   }
 };
 
-const createPostAndMiddlwares = [createPostValidationMiddlewares, createPost];
+const createPostAndMiddlwares = [
+  ...createPostValidationMiddlewares,
+  createPost,
+];
 
 /** @type {import("express").RequestHandler} */
 const getPosts = async (req, res) => {
@@ -56,7 +63,7 @@ const getPosts = async (req, res) => {
 
 /** @type {import("express").RequestHandler} */
 const updatePost = async (req, res) => {
-  const id = Number(req.params.id);
+  const { id } = req.params;
   const { title, body, isHidden } = req.body;
   try {
     await db.post.update({
@@ -81,14 +88,14 @@ const updatePost = async (req, res) => {
   }
 };
 
-const updatePostValidationMiddlewaresAndHandler = [
-  ...createPostValidationMiddlewares,
+const updatePostAndMiddlwares = [
+  ...updatePostValidationMiddlewares,
   updatePost,
 ];
 
 /** @type {import("express").RequestHandler} */
 const deletePost = async (req, res) => {
-  const id = Number(req.params.id);
+  const { id } = req.params;
   try {
     await db.post.delete({
       where: { id },
@@ -104,9 +111,14 @@ const deletePost = async (req, res) => {
   }
 };
 
+const deletePostAndMiddlwares = [
+  ...deletePostValidationMiddlewares,
+  deletePost,
+];
+
 export {
   createPostAndMiddlwares,
   getPosts,
-  updatePostValidationMiddlewaresAndHandler,
-  deletePost,
+  updatePostAndMiddlwares,
+  deletePostAndMiddlwares,
 };

@@ -8,40 +8,40 @@ const contentRule = body("content")
   .withMessage("Body must be 1-500 characters long");
 const postIdRuleAndSanitization = param("postId")
   .isInt({ min: 1 })
-  .toInt()
-  .withMessage("Post ID must be a +ve integer");
-const commentIdRuleAndSanitization = param("commentId")
+  .withMessage("Post ID must be a +ve integer")
+  .toInt();
+const commentIdRuleAndSanitization = param("id")
   .isInt({ min: 1 })
-  .toInt()
-  .withMessage("Comment ID must be a +ve integer");
+  .withMessage("Comment ID must be a +ve integer")
+  .toInt();
 
-const createCommentValidationAndSanitizationMiddlewares = [
+const createCommentValidationMiddlewars = [
   postIdRuleAndSanitization,
   contentRule,
   handleValidationResult,
 ];
 
-const updateCommentValidationAndSanitizationMiddlewares = [
+const updateCommentValidationMiddlewars = [
   postIdRuleAndSanitization,
   commentIdRuleAndSanitization,
   contentRule,
   handleValidationResult,
 ];
 
-const getCommentsValidationAndSanitizationMiddlewares = [
+const getCommentsValidationMiddlewars = [
   postIdRuleAndSanitization,
   handleValidationResult,
 ];
 
-const deleteCommentsValidationAndSanitizationMiddlewares = [
+const deleteCommentValidationMiddlewars = [
   postIdRuleAndSanitization,
   commentIdRuleAndSanitization,
   handleValidationResult,
 ];
 
 export {
-  createCommentValidationAndSanitizationMiddlewares,
-  getCommentsValidationAndSanitizationMiddlewares,
-  updateCommentValidationAndSanitizationMiddlewares,
-  deleteCommentsValidationAndSanitizationMiddlewares,
+  createCommentValidationMiddlewars,
+  getCommentsValidationMiddlewars,
+  updateCommentValidationMiddlewars,
+  deleteCommentValidationMiddlewars,
 };
