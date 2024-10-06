@@ -35,4 +35,19 @@ passport.use(
 const authMiddleware = passport.authenticate("jwt", {
   session: false,
 });
-export { authMiddleware };
+
+/** @type {import("express").RequestHandler} */
+const publicAuthMiddlware = (req, res, next) => {
+  passport.authenticate(
+    "jwt",
+    {
+      session: false,
+    },
+    (err, user) => {
+      req.user = user;
+      next();
+    }
+  )(req, res, next);
+};
+
+export { authMiddleware, publicAuthMiddlware };

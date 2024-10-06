@@ -1,7 +1,6 @@
 import { Router } from "express";
 import {
   createPostAndMiddlwares,
-  getPosts,
   updatePostAndMiddlwares,
   deletePostAndMiddlwares,
 } from "../controllers/post.js";
@@ -10,7 +9,6 @@ import commentRouter from "./comment.js";
 
 const postRouter = Router();
 
-postRouter.get("/", getPosts);
 postRouter.use("/:postId/comments", commentRouter);
 
 postRouter.use(onlyAdmin);

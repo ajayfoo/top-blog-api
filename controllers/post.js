@@ -38,7 +38,7 @@ const createPostAndMiddlwares = [
 /** @type {import("express").RequestHandler} */
 const getPosts = async (req, res) => {
   try {
-    if (req.user.isAdmin) {
+    if (req.user?.isAdmin) {
       const posts = await db.post.findMany();
       res.send(posts);
       return;
