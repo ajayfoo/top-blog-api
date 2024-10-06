@@ -103,16 +103,29 @@ const deleteComment = async (req, res) => {
   try {
     const { postId, id } = req.params;
     const userId = req.user.id;
-    await db.comment.delete({
-      where: {
-        id,
-        userId,
-        postId,
-      },
-    });
+    if (req.user.isAdmin) {
+      await db.comment.delete({
+        where: {
+          id,
+          postId,
+        },
+      });
+    } else {
+      await db.comment.delete({
+        where: {
+          id,
+          userId,
+          postId,
+        },
+      });
+    }
     res.sendStatus(200);
   } catch (err) {
     console.error(err);
+    if (err.code === "P2025") {
+      res.status(404).send("Comment not found");
+      return;
+    }
     res.sendStatus(500);
   }
 };
