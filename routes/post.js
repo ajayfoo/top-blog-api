@@ -6,10 +6,12 @@ import {
   updatePostValidationMiddlewaresAndHandler,
 } from "../controllers/post.js";
 import { onlyAdmin } from "../middlewares/admin.js";
+import commentRouter from "./comment.js";
 
 const postRouter = Router();
 
 postRouter.get("/", getPosts);
+postRouter.use("/:postId/comments", commentRouter);
 
 postRouter.use(onlyAdmin);
 
