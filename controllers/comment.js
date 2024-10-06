@@ -17,6 +17,7 @@ const createComment = async (req, res) => {
         post: {
           connect: {
             id: postId,
+            ...(req.user.isAdmin ? {} : { isHidden: false }),
           },
         },
         user: {
@@ -33,6 +34,10 @@ const createComment = async (req, res) => {
     res.status(201).send(id.toString());
   } catch (err) {
     console.error(err);
+    if (err.code === "P2025") {
+      res.status(404).send("Post not found");
+      return;
+    }
     res.sendStatus(500);
   }
 };
@@ -49,6 +54,7 @@ const getComments = async (req, res) => {
     const comments = await db.comment.findMany({
       where: {
         postId,
+        ...(req.user?.isAdmin ? {} : { post: { isHidden: false } }),
       },
       include: {
         user: {
@@ -84,6 +90,7 @@ const updateComment = async (req, res) => {
         id,
         userId,
         postId,
+        ...(req.user.isAdmin ? {} : { post: { isHidden: false } }),
       },
     });
     res.sendStatus(200);
@@ -116,6 +123,7 @@ const deleteComment = async (req, res) => {
           id,
           userId,
           postId,
+          ...(req.user.isAdmin ? {} : { post: { isHidden: false } }),
         },
       });
     }
