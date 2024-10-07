@@ -14,7 +14,7 @@ mainRouter.use(express.urlencoded({ extended: true }));
 mainRouter.use(express.json());
 mainRouter.use(
   cors({
-    origin: [process.env.VIEWER_FRONTEND_URL],
+    origin: [process.env.VIEWER_FRONTEND_URL, process.ADMIN_FRONTEND_URL],
   })
 );
 
