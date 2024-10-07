@@ -4,3 +4,5 @@ SALT_ROUNDS="" # e.g. 12
 JWT_ISSUER="" # e.g. api.foo.com 
 JWT_AUDIENCE="" # e.g. foo.com
 ADMIN_PASSCODE="[strong passcode]"
+VIEWER_FRONTEND_URL="" # e.g. http://localhost:5173
+ADMIN_FRONTEND_URL="" # e.g. http://localhost:5174
