@@ -52,7 +52,15 @@ const getPosts = async (req, res) => {
         title: true,
         body: true,
         updatedAt: true,
+        author: {
+          select: {
+            username: true,
+          },
+        },
       },
+    });
+    posts.map((p) => {
+      p.author = p.author.username;
     });
     res.send(posts);
   } catch (err) {
