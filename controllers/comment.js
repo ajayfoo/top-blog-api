@@ -12,7 +12,7 @@ const createComment = async (req, res) => {
     const { postId } = req.params;
     const userId = req.user.id;
     const { content } = req.body;
-    const { id } = await db.comment.create({
+    const { id, createdAt } = await db.comment.create({
       data: {
         post: {
           connect: {
@@ -29,9 +29,10 @@ const createComment = async (req, res) => {
       },
       select: {
         id: true,
+        createdAt: true,
       },
     });
-    res.status(201).send(id.toString());
+    res.status(201).json({ id, createdAt });
   } catch (err) {
     console.error(err);
     if (err.code === "P2025") {
@@ -56,13 +57,19 @@ const getComments = async (req, res) => {
         postId,
         ...(req.user?.isAdmin ? {} : { post: { isHidden: false } }),
       },
-      include: {
+      select: {
+        id: true,
         user: {
           select: {
             username: true,
           },
         },
+        content: true,
+        createdAt: true,
       },
+    });
+    comments.forEach((c) => {
+      c.user = c.user.username;
     });
     res.send(comments);
   } catch (err) {
