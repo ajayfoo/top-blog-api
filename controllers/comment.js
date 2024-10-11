@@ -103,6 +103,10 @@ const updateComment = async (req, res) => {
     res.sendStatus(200);
   } catch (err) {
     console.error(err);
+    if (err.code === "P2025") {
+      res.status(404).send("Comment not found");
+      return;
+    }
     res.sendStatus(500);
   }
 };
