@@ -65,7 +65,10 @@ const getComments = async (req, res) => {
           },
         },
         content: true,
-        createdAt: true,
+        updatedAt: true,
+      },
+      orderBy: {
+        updatedAt: "desc",
       },
     });
     comments.forEach((c) => {
