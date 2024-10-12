@@ -89,7 +89,7 @@ const updateComment = async (req, res) => {
     const { postId, id } = req.params;
     const userId = req.user.id;
     const { content } = req.body;
-    await db.comment.update({
+    const { updatedAt } = await db.comment.update({
       data: {
         content,
       },
@@ -99,8 +99,11 @@ const updateComment = async (req, res) => {
         postId,
         ...(req.user.isAdmin ? {} : { post: { isHidden: false } }),
       },
+      select: {
+        updatedAt: true,
+      },
     });
-    res.sendStatus(200);
+    res.json({ updatedAt });
   } catch (err) {
     console.error(err);
     if (err.code === "P2025") {
