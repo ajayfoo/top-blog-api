@@ -1,7 +1,7 @@
 import { Router } from "express";
 import express from "express";
 import authRouter from "./auth.js";
-import authenticatedUsersRouter from "./authenticatedUsers.js";
+import usernameRouter from "./username.js";
 import postRouter from "./post.js";
 import adminRouter from "./admin.js";
 import { authMiddleware } from "../middlewares/auth.js";
@@ -24,7 +24,7 @@ mainRouter.use("/auth", authRouter);
 
 mainRouter.use(authMiddleware);
 
-mainRouter.use("/authenticated-users", authenticatedUsersRouter);
+mainRouter.use("/usernames", usernameRouter);
 mainRouter.use("/admins", adminRouter);
 mainRouter.use("/posts", postRouter);
 
