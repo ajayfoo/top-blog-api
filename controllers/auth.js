@@ -50,7 +50,7 @@ const login = async (req, res) => {
       },
     });
     if (!user) {
-      res.status(404).send("User not found");
+      res.sendStatus(401);
       return;
     }
     const isCorrectPassword = await bcrypt.compare(password, user.password);
