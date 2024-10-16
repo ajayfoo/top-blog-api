@@ -69,4 +69,26 @@ const login = async (req, res) => {
 
 const loginAndMiddlewares = [loginValidationMiddlewares, login];
 
-export { signUpAndMiddlewares, loginAndMiddlewares };
+/** @type {import("express").RequestHandler} */
+const lookupAvailableUsername = async (req, res) => {
+  try {
+    const user = await db.user.findUnique({
+      where: {
+        username: req.params.username,
+      },
+      select: {
+        username: true,
+      },
+    });
+    if (!user) {
+      res.sendStatus(200);
+      return;
+    }
+    res.sendStatus(404);
+  } catch (err) {
+    console.error(err);
+    req.sendStatus(500);
+  }
+};
+
+export { signUpAndMiddlewares, loginAndMiddlewares, lookupAvailableUsername };
