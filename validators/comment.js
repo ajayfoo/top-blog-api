@@ -3,7 +3,6 @@ import { handleValidationResult } from "./utils.js";
 
 const contentRule = body("content")
   .trim()
-  .escape()
   .isLength({ min: 1, max: 500 })
   .withMessage("Body must be 1-500 characters long");
 const postIdRuleAndSanitization = param("postId")
