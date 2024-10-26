@@ -37,15 +37,40 @@ const createPostAndMiddlwares = [
 
 /** @type {import("express").RequestHandler} */
 const getPosts = async (req, res) => {
+  const author = req.query.author;
   try {
     if (req.user?.isAdmin) {
-      const posts = await db.post.findMany();
+      const posts = await db.post.findMany({
+        ...(author
+          ? {
+              where: {
+                author: {
+                  username: author,
+                },
+              },
+            }
+          : {}),
+        include: {
+          author: {
+            select: {
+              username: true,
+            },
+          },
+        },
+      });
       res.send(posts);
       return;
     }
     const posts = await db.post.findMany({
       where: {
         isHidden: false,
+        ...(author
+          ? {
+              author: {
+                username: author,
+              },
+            }
+          : {}),
       },
       select: {
         id: true,
@@ -58,9 +83,6 @@ const getPosts = async (req, res) => {
           },
         },
       },
-    });
-    posts.map((p) => {
-      p.author = p.author.username;
     });
     res.send(posts);
   } catch (err) {
