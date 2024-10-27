@@ -17,7 +17,7 @@ const createComment = async (req, res) => {
         post: {
           connect: {
             id: postId,
-            ...(req.user.isAdmin ? {} : { isHidden: false }),
+            ...(req.user.isAuthor ? {} : { isHidden: false }),
           },
         },
         user: {
@@ -55,7 +55,7 @@ const getComments = async (req, res) => {
     const comments = await db.comment.findMany({
       where: {
         postId,
-        ...(req.user?.isAdmin ? {} : { post: { isHidden: false } }),
+        ...(req.user?.isAuthor ? {} : { post: { isHidden: false } }),
       },
       select: {
         id: true,
@@ -100,7 +100,7 @@ const updateComment = async (req, res) => {
         id,
         userId,
         postId,
-        ...(req.user.isAdmin ? {} : { post: { isHidden: false } }),
+        ...(req.user.isAuthor ? {} : { post: { isHidden: false } }),
       },
       select: {
         updatedAt: true,
@@ -127,7 +127,7 @@ const deleteComment = async (req, res) => {
   try {
     const { postId, id } = req.params;
     const userId = req.user.id;
-    if (req.user.isAdmin) {
+    if (req.user.isAuthor) {
       await db.comment.delete({
         where: {
           id,
@@ -140,7 +140,7 @@ const deleteComment = async (req, res) => {
           id,
           userId,
           postId,
-          ...(req.user.isAdmin ? {} : { post: { isHidden: false } }),
+          ...(req.user.isAuthor ? {} : { post: { isHidden: false } }),
         },
       });
     }

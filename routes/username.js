@@ -9,7 +9,7 @@ usernameRouter.get("/", async (req, res) => {
     const result = await db.user.findUnique({
       where: {
         id: req.user.id,
-        ...(isFromAuthorFrontend ? { isAdmin: true } : {}),
+        ...(isFromAuthorFrontend ? { isAuthor: true } : {}),
       },
       select: {
         username: true,

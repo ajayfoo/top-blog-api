@@ -18,7 +18,7 @@ passport.use(
         },
         select: {
           id: true,
-          isAdmin: true,
+          isAuthor: true,
         },
       });
       if (user) {

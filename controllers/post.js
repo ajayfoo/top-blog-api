@@ -18,7 +18,7 @@ const createPost = async (req, res) => {
         author: {
           connect: {
             id: authorId,
-            isAdmin: true,
+            isAuthor: true,
           },
         },
       },
@@ -39,7 +39,7 @@ const createPostAndMiddlwares = [
 const getPosts = async (req, res) => {
   const author = req.query.author;
   try {
-    if (req.user?.isAdmin) {
+    if (req.user?.isAuthor) {
       const posts = await db.post.findMany({
         ...(author
           ? {

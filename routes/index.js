@@ -3,7 +3,7 @@ import express from "express";
 import authRouter from "./auth.js";
 import usernameRouter from "./username.js";
 import postRouter from "./post.js";
-import adminRouter from "./admin.js";
+import authorRouter from "./author.js";
 import { authMiddleware } from "../middlewares/auth.js";
 import publicRouter from "./public/index.js";
 import cors from "cors";
@@ -25,7 +25,7 @@ mainRouter.use("/auth", authRouter);
 mainRouter.use(authMiddleware);
 
 mainRouter.use("/usernames", usernameRouter);
-mainRouter.use("/admins", adminRouter);
+mainRouter.use("/authors", authorRouter);
 mainRouter.use("/posts", postRouter);
 
 export default mainRouter;

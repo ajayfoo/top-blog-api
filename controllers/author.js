@@ -1,7 +1,7 @@
 import "dotenv/config";
 import { db } from "../libs/db.js";
 /** @type {import("express").RequestHandler} */
-const becomeAdmin = async (req, res) => {
+const becomeAuthor = async (req, res) => {
   const { passcode } = req.body;
   if (passcode !== process.env.AUTHOR_PASSCODE) {
     res.status(401).send("Wrong passcode");
@@ -11,7 +11,7 @@ const becomeAdmin = async (req, res) => {
   try {
     await db.user.update({
       data: {
-        isAdmin: true,
+        isAuthor: true,
       },
       where: {
         id: userId,
@@ -24,4 +24,4 @@ const becomeAdmin = async (req, res) => {
   }
 };
 
-export { becomeAdmin };
+export { becomeAuthor };

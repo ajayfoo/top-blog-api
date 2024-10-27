@@ -4,14 +4,14 @@ import {
   updatePostAndMiddlwares,
   deletePostAndMiddlwares,
 } from "../controllers/post.js";
-import { onlyAdmin } from "../middlewares/admin.js";
+import { onlyAuthor } from "../middlewares/author.js";
 import commentRouter from "./comment.js";
 
 const postRouter = Router();
 
 postRouter.use("/:postId/comments", commentRouter);
 
-postRouter.use(onlyAdmin);
+postRouter.use(onlyAuthor);
 
 postRouter.post("/", createPostAndMiddlwares);
 postRouter.patch("/:id", updatePostAndMiddlwares);
