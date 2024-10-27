@@ -3,7 +3,7 @@ import { db } from "../libs/db.js";
 /** @type {import("express").RequestHandler} */
 const becomeAdmin = async (req, res) => {
   const { passcode } = req.body;
-  if (passcode !== process.env.ADMIN_PASSCODE) {
+  if (passcode !== process.env.AUTHOR_PASSCODE) {
     res.status(401).send("Wrong passcode");
     return;
   }
