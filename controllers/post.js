@@ -37,19 +37,19 @@ const createPostAndMiddlwares = [
 
 /** @type {import("express").RequestHandler} */
 const getPosts = async (req, res) => {
-  const author = req.query.author;
+  const isFromAuthorFrontend =
+    req.headers.origin === process.env.AUTHOR_FRONTEND_URL;
+  const isAuthor = req.user?.isAuthor;
+  if (isFromAuthorFrontend && !isAuthor) {
+    return res.sendStatus(401);
+  }
+
   try {
-    if (req.user?.isAuthor) {
+    if (isFromAuthorFrontend) {
       const posts = await db.post.findMany({
-        ...(author
-          ? {
-              where: {
-                author: {
-                  username: author,
-                },
-              },
-            }
-          : {}),
+        where: {
+          authorId: req.user.id,
+        },
         include: {
           author: {
             select: {
@@ -58,9 +58,9 @@ const getPosts = async (req, res) => {
           },
         },
       });
-      res.send(posts);
-      return;
+      return res.send(posts);
     }
+    const author = req.query.author;
     const posts = await db.post.findMany({
       where: {
         isHidden: false,
