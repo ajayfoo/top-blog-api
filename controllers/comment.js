@@ -92,6 +92,16 @@ const updateComment = async (req, res) => {
     const { postId, id } = req.params;
     const userId = req.user.id;
     const { content } = req.body;
+    const isAuthorOfPost =
+      (await db.comment.findUnique({
+        where: {
+          id,
+          post: {
+            id: postId,
+            authorId: userId,
+          },
+        },
+      })) !== null;
     const { updatedAt } = await db.comment.update({
       data: {
         content,
@@ -99,8 +109,12 @@ const updateComment = async (req, res) => {
       where: {
         id,
         userId,
-        postId,
-        ...(req.user.isAuthor ? {} : { post: { isHidden: false } }),
+        post: {
+          id: postId,
+          authorId: userId,
+          isHidden: false,
+          ...(isAuthorOfPost ? {} : { isHidden: false }),
+        },
       },
       select: {
         updatedAt: true,
@@ -127,11 +141,24 @@ const deleteComment = async (req, res) => {
   try {
     const { postId, id } = req.params;
     const userId = req.user.id;
-    if (req.user.isAuthor) {
+    const isAuthorOfPost =
+      (await db.comment.findUnique({
+        where: {
+          id,
+          post: {
+            id: postId,
+            authorId: userId,
+          },
+        },
+      })) !== null;
+    if (isAuthorOfPost) {
       await db.comment.delete({
         where: {
           id,
-          postId,
+          post: {
+            id: postId,
+            authorId: userId,
+          },
         },
       });
     } else {
@@ -139,8 +166,7 @@ const deleteComment = async (req, res) => {
         where: {
           id,
           userId,
-          postId,
-          ...(req.user.isAuthor ? {} : { post: { isHidden: false } }),
+          post: { id: postId, isHidden: false },
         },
       });
     }

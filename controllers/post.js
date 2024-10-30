@@ -104,6 +104,7 @@ const updatePost = async (req, res) => {
       },
       where: {
         id,
+        authorId: req.user.id,
       },
     });
     res.sendStatus(200);
@@ -128,7 +129,7 @@ const deletePost = async (req, res) => {
   const { id } = req.params;
   try {
     await db.post.delete({
-      where: { id },
+      where: { id, authorId: req.user.id },
     });
     res.sendStatus(200);
   } catch (err) {
