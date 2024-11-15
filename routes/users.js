@@ -1,8 +1,8 @@
 import { Router } from "express";
 import { db } from "../libs/db.js";
 
-const usernameRouter = Router();
-usernameRouter.get("/", async (req, res) => {
+const usersRouter = Router();
+usersRouter.get("/", async (req, res) => {
   if (req.isAuthenticated()) {
     const isFromAuthorFrontend =
       req.headers.origin === process.env.AUTHOR_FRONTEND_URL;
@@ -13,13 +13,18 @@ usernameRouter.get("/", async (req, res) => {
       },
       select: {
         username: true,
+        isAuthor: true,
       },
     });
     if (result) {
-      return res.send(result.username);
+      const user = {
+        username: result.username,
+        isAuthor: result.isAuthor,
+      };
+      return res.json(user);
     }
   }
   return res.sendStatus(401);
 });
 
-export default usernameRouter;
+export default usersRouter;
