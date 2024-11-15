@@ -8,7 +8,6 @@ const titleValidation = body("title")
   .withMessage("Title must be 1-200 characters long");
 const bodyValidation = body("body")
   .trim()
-  .escape()
   .isLength({ min: 1, max: 20_000 })
   .withMessage("Body must be 1-20000 characters long");
 const isHiddenValidation = body("isHidden")
