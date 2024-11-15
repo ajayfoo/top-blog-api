@@ -3,7 +3,7 @@ import {
   createCommentAndMiddlewares,
   updateCommentAndMiddlewares,
   deleteCommentAndMiddlewares,
-} from "../controllers/comment.js";
+} from "../controllers/comments.js";
 
 const commentRouter = Router({ mergeParams: true });
 

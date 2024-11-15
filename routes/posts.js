@@ -3,9 +3,9 @@ import {
   createPostAndMiddlwares,
   updatePostAndMiddlwares,
   deletePostAndMiddlwares,
-} from "../controllers/post.js";
+} from "../controllers/posts.js";
 import { onlyAuthor } from "../middlewares/author.js";
-import commentRouter from "./comment.js";
+import commentRouter from "./comments.js";
 
 const postRouter = Router();
 

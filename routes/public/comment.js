@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { getCommentsAndMiddlewars } from "../../controllers/comment.js";
+import { getCommentsAndMiddlewars } from "../../controllers/comments.js";
 
 const publicCommentRouter = Router({ mergeParams: true });
 
