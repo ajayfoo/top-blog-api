@@ -1,4 +1,5 @@
 import { db } from "../libs/db.js";
+import multer from "multer";
 import {
   createPostValidationMiddlewares,
   deletePostValidationMiddlewares,
@@ -29,8 +30,10 @@ const createPost = async (req, res) => {
     res.sendStatus(500);
   }
 };
-
+const upload = multer({ dest: "uploads/" });
+const uploadMiddleware = upload.array("blob");
 const createPostAndMiddlwares = [
+  uploadMiddleware,
   ...createPostValidationMiddlewares,
   createPost,
 ];

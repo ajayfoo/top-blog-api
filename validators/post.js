@@ -12,8 +12,6 @@ const bodyValidation = body("body")
   .withMessage("Body must be 1-20000 characters long");
 const isHiddenValidation = body("isHidden")
   .isBoolean()
-  .not()
-  .isString()
   .withMessage("isHidden must be a boolean: [true, false, 0, 1]");
 
 const createPostValidationMiddlewares = [
