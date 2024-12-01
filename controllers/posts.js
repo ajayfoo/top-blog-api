@@ -5,6 +5,7 @@ import {
   deletePostValidationMiddlewares,
   updatePostValidationMiddlewares,
 } from "../validators/post.js";
+import { updateFileUrlsInPostBody } from "../middlewares/media.js";
 
 /** @type {import("express").RequestHandler} */
 const createPost = async (req, res) => {
@@ -30,11 +31,14 @@ const createPost = async (req, res) => {
     res.sendStatus(500);
   }
 };
-const upload = multer({ dest: "uploads/" });
+
+const storage = multer.memoryStorage();
+const upload = multer({ storage });
 const uploadMiddleware = upload.array("blob");
 const createPostAndMiddlwares = [
   uploadMiddleware,
   ...createPostValidationMiddlewares,
+  updateFileUrlsInPostBody,
   createPost,
 ];
 

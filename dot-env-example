@@ -6,3 +6,5 @@ JWT_AUDIENCE="" # e.g. foo.com
 AUTHOR_PASSCODE="[strong passcode]"
 VIEWER_FRONTEND_URL="" # e.g. http://localhost:5173
 AUTHOR_FRONTEND_URL="" # e.g. http://localhost:5174
+SUPABASE_URL=""
+SUPABASE_PUBLIC_KEY=""
