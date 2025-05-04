@@ -18,6 +18,7 @@ const updateFileUrlsInPostBody = async (req, res, next) => {
     const url = supabase.storage.from("public-images").getPublicUrl(data.path);
     urls.push(url);
   }
+  next();
 };
 
 export { updateFileUrlsInPostBody };
