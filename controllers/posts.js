@@ -16,7 +16,7 @@ const createPost = async (req, res) => {
       data: {
         title,
         body,
-        isHidden: isHidden === "true",
+        isHidden,
         author: {
           connect: {
             id: authorId,
