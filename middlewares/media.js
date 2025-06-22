@@ -6,9 +6,10 @@ const updateFileUrlsInPostBody = async (req, res, next) => {
   for (const file of req.files) {
     const b = file.buffer;
     let fileArraybuffer = b.slice(b.byteOffset, b.byteOffset + b.byteLength);
+    const filePath = crypto.randomUUID();
     const { data, error } = await supabase.storage
       .from("public-images")
-      .upload("anImage4", fileArraybuffer, {
+      .upload(filePath, fileArraybuffer, {
         contentType: file.mimetype,
       });
     if (error) {
@@ -16,9 +17,22 @@ const updateFileUrlsInPostBody = async (req, res, next) => {
       return;
     }
     const url = supabase.storage.from("public-images").getPublicUrl(data.path);
-    urls.push(url);
+    urls.push(url.data.publicUrl);
+  }
+  for (const url of urls) {
+    req.body.body = replaceFirstOccuranceOfBlobUrl(req.body.body, url);
   }
   next();
+};
+
+const replaceFirstOccuranceOfBlobUrl = (stringWithBlogUrl, replacementUrl) => {
+  const blogUrlBeginIndex = stringWithBlogUrl.indexOf('"blob:');
+  const blogUrlEndIndex = stringWithBlogUrl.indexOf('"', blogUrlBeginIndex + 1);
+  return (
+    stringWithBlogUrl.substring(0, blogUrlBeginIndex + 1) +
+    replacementUrl +
+    stringWithBlogUrl.substring(blogUrlEndIndex)
+  );
 };
 
 export { updateFileUrlsInPostBody };
