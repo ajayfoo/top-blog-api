@@ -127,7 +127,9 @@ const updatePost = async (req, res) => {
 };
 
 const updatePostAndMiddlwares = [
+  uploadMiddleware,
   ...updatePostValidationMiddlewares,
+  updateFileUrlsInPostBody,
   updatePost,
 ];
 

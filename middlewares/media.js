@@ -27,6 +27,7 @@ const updateFileUrlsInPostBody = async (req, res, next) => {
 
 const replaceFirstOccuranceOfBlobUrl = (stringWithBlogUrl, replacementUrl) => {
   const blogUrlBeginIndex = stringWithBlogUrl.indexOf('"blob:');
+  if (blogUrlBeginIndex === -1) return stringWithBlogUrl;
   const blogUrlEndIndex = stringWithBlogUrl.indexOf('"', blogUrlBeginIndex + 1);
   return (
     stringWithBlogUrl.substring(0, blogUrlBeginIndex + 1) +
