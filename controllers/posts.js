@@ -25,7 +25,19 @@ const createPost = async (req, res) => {
         },
       },
     });
-    res.send(id.toString());
+    const post = await db.post.findUniqueOrThrow({
+      where: {
+        id,
+      },
+      include: {
+        author: {
+          select: {
+            username: true,
+          },
+        },
+      },
+    });
+    res.send(post);
   } catch (err) {
     console.error(err);
     res.sendStatus(500);
