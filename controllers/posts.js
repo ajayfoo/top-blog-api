@@ -126,7 +126,19 @@ const updatePost = async (req, res) => {
         authorId: req.user.id,
       },
     });
-    res.sendStatus(200);
+    const post = await db.post.findUniqueOrThrow({
+      where: {
+        id,
+      },
+      include: {
+        author: {
+          select: {
+            username: true,
+          },
+        },
+      },
+    });
+    res.send(post);
     return;
   } catch (err) {
     console.error(err);
