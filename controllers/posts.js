@@ -3,6 +3,7 @@ import multer from "multer";
 import {
   createPostValidationMiddlewares,
   deletePostValidationMiddlewares,
+  updateIsHiddenValidationMiddlewares,
   updatePostValidationMiddlewares,
 } from "../validators/post.js";
 import { updateFileUrlsInPostBody } from "../middlewares/media.js";
@@ -180,9 +181,39 @@ const deletePostAndMiddlwares = [
   deletePost,
 ];
 
+/** @type {import("express").RequestHandler} */
+const updateIsHidden = async (req, res) => {
+  const { id } = req.params;
+  const { isHidden } = req.body;
+  try {
+    await db.post.update({
+      where: {
+        id,
+      },
+      data: {
+        isHidden,
+      },
+    });
+    res.sendStatus(200);
+  } catch (err) {
+    console.error(err);
+    if (err.code === "P2025") {
+      res.status(404).send("Post not found");
+      return;
+    }
+    res.sendStatus(500);
+  }
+};
+
+const updateIsHiddenAndMiddlwares = [
+  updateIsHiddenValidationMiddlewares,
+  updateIsHidden,
+];
+
 export {
   createPostAndMiddlwares,
   getPosts,
   updatePostAndMiddlwares,
   deletePostAndMiddlwares,
+  updateIsHiddenAndMiddlwares,
 };

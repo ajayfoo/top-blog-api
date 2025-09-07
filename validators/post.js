@@ -39,8 +39,15 @@ const deletePostValidationMiddlewares = [
   handleValidationResult,
 ];
 
+const updateIsHiddenValidationMiddlewares = [
+  postIdValidation,
+  isHiddenValidation,
+  handleValidationResult,
+];
+
 export {
   createPostValidationMiddlewares,
   updatePostValidationMiddlewares,
   deletePostValidationMiddlewares,
+  updateIsHiddenValidationMiddlewares,
 };
