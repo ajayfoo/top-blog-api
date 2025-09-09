@@ -77,6 +77,11 @@ const getPosts = async (req, res) => {
             },
           },
         },
+        orderBy: [
+          {
+            updatedAt: "desc",
+          },
+        ],
       });
       return res.send(posts);
     }
@@ -103,6 +108,11 @@ const getPosts = async (req, res) => {
           },
         },
       },
+      orderBy: [
+        {
+          updatedAt: "desc",
+        },
+      ],
     });
     res.send(posts);
   } catch (err) {
