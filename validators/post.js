@@ -3,7 +3,6 @@ import { handleValidationResult } from "./utils.js";
 
 const titleValidation = body("title")
   .trim()
-  .escape()
   .isLength({ min: 1, max: 200 })
   .withMessage("Title must be 1-200 characters long");
 const bodyValidation = body("body")
