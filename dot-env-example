@@ -1,7 +1,8 @@
 DATABASE_URL="[database connection string]"
+DIRECT_URL="[database connection string]"
 PORT="[port number]"
 SALT_ROUNDS="" # e.g. 12
-JWT_ISSUER="" # e.g. api.foo.com 
+JWT_ISSUER="" # e.g. api.foo.com
 JWT_AUDIENCE="" # e.g. foo.com
 AUTHOR_PASSCODE="[strong passcode]"
 VIEWER_FRONTEND_URL="" # e.g. http://localhost:5173
