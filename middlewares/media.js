@@ -27,7 +27,11 @@ const updateFileUrlsInPostBody = async (req, res, next) => {
 
 const replaceFirstOccuranceOfBlobUrl = (stringWithBlogUrl, replacementUrl) => {
   const blogUrlBeginIndex = stringWithBlogUrl.indexOf('"blob:');
-  if (blogUrlBeginIndex === -1) return stringWithBlogUrl;
+  if (blogUrlBeginIndex === -1) {
+    console.warn(`string '"blob:' not found in ${stringWithBlogUrl}`);
+    console.warn(`The image ${replacementUrl} will not be shown in the post`);
+    return stringWithBlogUrl;
+  }
   const blogUrlEndIndex = stringWithBlogUrl.indexOf('"', blogUrlBeginIndex + 1);
   return (
     stringWithBlogUrl.substring(0, blogUrlBeginIndex + 1) +
