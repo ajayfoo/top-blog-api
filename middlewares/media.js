@@ -23,6 +23,9 @@ const updateFileUrlsInPostBody = async (req, res, next) => {
   console.log("Request body:-");
   console.log(req.body);
 
+  console.log("Request body:-");
+  console.log(req.files);
+
   console.log("Replacement urls:-");
   console.log(urls);
 
