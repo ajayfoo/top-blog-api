@@ -19,6 +19,10 @@ const updateFileUrlsInPostBody = async (req, res, next) => {
     const url = supabase.storage.from("public-images").getPublicUrl(data.path);
     urls.push(url.data.publicUrl);
   }
+  console.log("Request body:-");
+  console.log(req.body);
+  console.log("Replacement urls:-");
+  console.log(urls);
   for (const url of urls) {
     req.body.body = replaceFirstOccuranceOfBlobUrl(req.body.body, url);
   }
@@ -32,6 +36,9 @@ const replaceFirstOccuranceOfBlobUrl = (stringWithBlogUrl, replacementUrl) => {
     console.warn(`The image ${replacementUrl} will not be shown in the post`);
     return stringWithBlogUrl;
   }
+  console.log(
+    `Replacing first blob in ${stringWithBlogUrl} with ${replacementUrl}`
+  );
   const blogUrlEndIndex = stringWithBlogUrl.indexOf('"', blogUrlBeginIndex + 1);
   return (
     stringWithBlogUrl.substring(0, blogUrlBeginIndex + 1) +
