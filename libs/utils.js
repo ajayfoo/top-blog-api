@@ -1,15 +1,10 @@
 import jwt from "jsonwebtoken";
-import fs from "node:fs";
-import path, { dirname } from "node:path";
-import { fileURLToPath } from "node:url";
 import "dotenv/config";
 
-const parentFolder = dirname(fileURLToPath(import.meta.url));
-const rootFolder = dirname(parentFolder);
-
-const secret = fs.readFileSync(
-  path.join(rootFolder, "secrets", "private-key.pem")
-);
+if (!process.env.JWT_KEY) {
+  throw new Error("JWT Key was not provided");
+}
+const secret = process.env.JWT_KEY.replace(/\\n/g, "\n");
 
 const createJWT = (sub) => {
   const token = jwt.sign({ sub }, secret, {

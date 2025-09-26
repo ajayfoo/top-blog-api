@@ -4,8 +4,7 @@
   "type": "module",
   "scripts": {
     "serve": "node app.js",
-    "dev": "node --watch --inspect app.js",
-    "bootstrap": "node ./bin/bootstrap.js"
+    "dev": "node --watch --inspect app.js"
   },
   "license": "MIT",
   "devDependencies": {
