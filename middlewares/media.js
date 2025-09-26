@@ -19,10 +19,13 @@ const updateFileUrlsInPostBody = async (req, res, next) => {
     const url = supabase.storage.from("public-images").getPublicUrl(data.path);
     urls.push(url.data.publicUrl);
   }
+
   console.log("Request body:-");
   console.log(req.body);
+
   console.log("Replacement urls:-");
   console.log(urls);
+
   for (const url of urls) {
     req.body.body = replaceFirstOccuranceOfBlobUrl(req.body.body, url);
   }
