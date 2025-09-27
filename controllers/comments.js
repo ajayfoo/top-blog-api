@@ -109,10 +109,8 @@ const updateComment = async (req, res) => {
       where: {
         id,
         userId,
+        postId,
         post: {
-          id: postId,
-          authorId: userId,
-          isHidden: false,
           ...(isAuthorOfPost ? {} : { isHidden: false }),
         },
       },
