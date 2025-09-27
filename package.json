@@ -3,8 +3,9 @@
   "version": "0.0.1",
   "type": "module",
   "scripts": {
-    "start": "node app.js",
-    "dev": "node --watch --inspect app.js"
+    "db-push": "prisma db push",
+    "start": "npm run db-push && node app.js",
+    "dev": "npm run db-push && node --watch --inspect app.js"
   },
   "license": "MIT",
   "devDependencies": {
